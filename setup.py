@@ -3,6 +3,8 @@ from setuptools import setup, find_packages
 setup(
     name='yum2s3',
     version='0.1',
+    description='Creates custom repositories in s3',
+    long_description=open('README.rst').read(),
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     install_requires=[
