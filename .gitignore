@@ -80,3 +80,5 @@ Temporary Items
 *.egg-info
 dist
 build
+*.pyc
+__pycache__
