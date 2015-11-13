@@ -9,7 +9,7 @@ class Credentials(object):
     freeze_properties = ['region', 'aws_secret_access_key', 'aws_access_key_id', 'aws_session_token', 'profile', 'role']
 
     def __init__(self, region=None, aws_secret_access_key=None, aws_access_key_id=None, aws_session_token=None,
-                 profile=None, role=None, role_session_name=None):
+                 profile=None, role=None, role_session_name=None, **kwargs):
 
         self.region = region
 

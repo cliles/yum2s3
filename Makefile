@@ -1,8 +1,14 @@
 rst-readme:
 	pandoc README.md -f markdown -t rst -s -o README.rst
 
-release-test: rst-readme
-	twine upload -r pypitest dist/pyum-*
+build:
+	python setup.py sdist bdist_wheel
 
-release: rst-readme
-	twine upload -r pypi dist/pyum-*
+release-test: rst-readme build
+	twine upload -r pypitest dist/yum2s3-*
+
+release: rst-readme build
+	twine upload -r pypi dist/yum2s3-*
+
+clean:
+	rm -rf dist build

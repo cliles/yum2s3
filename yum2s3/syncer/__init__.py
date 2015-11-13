@@ -8,7 +8,7 @@ __author__ = 'drews'
 
 class Syncer(object):
     def __init__(self, repos, s3target, session):
-        self.repos_path = path.abspath(path.expanduser(repos))
+        self.repos_path = repos
         self.repos = []
         self.s3target = s3target
         self.session = session
@@ -16,13 +16,16 @@ class Syncer(object):
     def load_repos(self):
         if os.path.isdir(self.repos_path):
             for file in glob.glob("{0}/*.repo".format(self.repos_path)):
-                repo = pyum.RepoFile(file)
-                repo.set_yum_variables(
+                repofile = pyum.RepoFile(file)
+                repofile.set_yum_variables(
                     releasever='7',
                     basearch='x86_64'
                 )
+                for repo_name in repofile.keys:
+                    repo = repofile[repo_name]
+                    if repo.enabled:
+                        self.repos.append(repo)
 
-                self.repos.append(repo)
         else:
             repo = pyum.RepoFile(self.repos_path)
             repo.set_yum_variables(
@@ -32,5 +35,13 @@ class Syncer(object):
             self.repos = [repo]
         return self
 
-    def run(self):
+    def run(self, package_list):
+        rpms = []
+        for repo in self.repos:
+            try:
+                md = repo.primary()
+                pass
+            except ConnectionError as e:
+                continue
+            pass
         pass

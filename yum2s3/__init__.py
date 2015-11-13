@@ -1,4 +1,5 @@
 from yum2s3 import auth
+from yum2s3.path import expand
 from yum2s3.syncer import Syncer
 
 __author__ = 'drews'
@@ -20,17 +21,24 @@ import click
               default=None)
 @click.option('--role', help='Role to assume')
 @click.option('--role-session-name', help='If you have assigned a role, set a RoleSessionName')
-@click.argument('repo_config')
-@click.argument('s3_target')
-def run(repo_config, s3_target, **kwargs):
+@click.option('--repo-config', help='Path to folder or file containing repository definitions',
+              default='/etc/yum.repos.d/')
+@click.argument('package-list')
+@click.argument('s3-target')
+def run(repo_config, package_list, s3_target, **kwargs):
     """
     Greets a person and prints a message of the day.
     """
     auth.validate_creds(**kwargs)
     session = auth.Credentials(**kwargs).create_session()
 
+    package_list = expand(package_list)
+    repo_config = expand(repo_config)
+
     Syncer(
         repos=repo_config,
         s3target=s3_target,
         session=session
-    ).load_repos().run()
+    ).load_repos().run(
+        open(package_list, 'r').read().strip().split("\n")
+    )

@@ -82,3 +82,4 @@ dist
 build
 *.pyc
 __pycache__
+README.rst
