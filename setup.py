@@ -8,7 +8,7 @@ setup(
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     install_requires=[
-        'Click', 'pyum'
+        'Click', 'pyum', 'boto3', 'configparser',
     ],
     entry_points='''
 [console_scripts]
